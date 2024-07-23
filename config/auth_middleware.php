@@ -29,8 +29,11 @@ function authenticate($requiredRole = null) {
 
         if ($jwt) {
             try {
-                // Asegúrate de que la clave en tu archivo .env está escrita correctamente
                 $secretKey = $_ENV['SECRET_KEY'];
+                // Debug: Verificar que la clave se carga correctamente
+                if(!$secretKey) {
+                    throw new Exception('SECRET_KEY no está definido');
+                }
                 $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
 
                 // Verificar el rol del usuario si se requiere
@@ -46,7 +49,7 @@ function authenticate($requiredRole = null) {
             } catch (Exception $e) {
                 // Token inválido
                 http_response_code(401);
-                echo json_encode(['message' => 'Acceso no autorizado']);
+                echo json_encode(['message' => 'Acceso no autorizado', 'error' => $e->getMessage()]);
                 exit();
             }
         } else {
