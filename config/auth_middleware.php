@@ -5,12 +5,8 @@ require '../config/database.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
-
-
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-
-
 
 function authenticate($requiredRole = null) {
     header("Access-Control-Allow-Origin: *");
@@ -33,8 +29,8 @@ function authenticate($requiredRole = null) {
 
         if ($jwt) {
             try {
-                 //$secretKey = '142345';
-                 $secretKey = $_ENV['SECREt_KEY'];
+                // Asegúrate de que la clave en tu archivo .env está escrita correctamente
+                $secretKey = $_ENV['SECRET_KEY'];
                 $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
 
                 // Verificar el rol del usuario si se requiere
