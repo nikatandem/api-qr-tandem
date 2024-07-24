@@ -3,7 +3,7 @@ require '../vendor/autoload.php';
 require '../config/cors.php';
 include "../config/database.php";
 require '../config/auth_middleware.php';
-$decoded = authenticate(); // Llama al middleware y almacena los datos decodificados si el token es válido
+$decoded = authenticate('admin'); // Llama al middleware y almacena los datos decodificados si el token es válido
 
 
 $sql = "SELECT * FROM users";
