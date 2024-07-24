@@ -30,16 +30,18 @@ function authenticate($requiredRole = null) {
         if ($jwt) {
             try {
                 $secretKey = $_ENV['SECRET_KEY'];
-                // Debug: Verificar que la clave se carga correctamente
-                if(!$secretKey) {
+                if (!$secretKey) {
                     throw new Exception('SECRET_KEY no está definido');
                 }
                 $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
 
+                // Definir jerarquía de roles
+                $roleHierarchy = ['guest' => 0, 'employee' => 1, 'admin' => 2];
+
                 // Verificar el rol del usuario si se requiere
-                if ($requiredRole && (!isset($decoded->role) || $decoded->role != $requiredRole)) {
+                if ($requiredRole && (!isset($decoded->role) || $roleHierarchy[$decoded->role] < $roleHierarchy[$requiredRole])) {
                     http_response_code(403);
-                    echo json_encode(['message' => 'Permiso denegado']);
+                    echo json_encode(['message' => 'Permiso denegado para el rol ' . $decoded->role]);
                     exit();
                 }
 
