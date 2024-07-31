@@ -18,11 +18,12 @@ $id = filter_var($input['id'], FILTER_SANITIZE_NUMBER_INT);
 $sql = "DELETE FROM qr_codes WHERE id = ?";
 $stmt = $pdo->prepare($sql);
 
-if ($stmt->execute([$id])) {
+if ($stmt->rowCount() > 0) {
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode(['message' => 'Código QR eliminado exitosamente']);
 } else {
     header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(['message' => 'Error al eliminar código QR']);
+    echo json_encode(['message' => 'Error: No se encontró ningún código QR con el ID especificado']);
+    http_response_code(404); // Not Found
 }
 ?>

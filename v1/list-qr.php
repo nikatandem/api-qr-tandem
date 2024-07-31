@@ -2,8 +2,7 @@
 require "../config/cors.php";
 require '../vendor/autoload.php';
 require "../config/database.php";
-require '../config/auth_middleware.php';
-$decoded = authenticate('admin' || 'employee');
+
 
 $sql = "SELECT
     qr_codes.id AS qr_id,

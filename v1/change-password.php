@@ -2,8 +2,7 @@
 require '../config/cors.php';
 require '../vendor/autoload.php';
 require '../config/database.php';
-require '../config/auth_middleware.php';
-$decoded = authenticate();
+
 $input = json_decode(file_get_contents('php://input'), true);
 
 $email = $input['email'];
